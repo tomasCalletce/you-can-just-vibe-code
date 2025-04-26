@@ -1,7 +1,6 @@
 import "./style.css";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { io, Socket } from "socket.io-client";
 
 // Initialize Socket.IO client
@@ -188,7 +187,6 @@ camera.position.set(0, 2, 5); // Behind and above
 
 // Create loading manager for assets
 const loadingManager = new THREE.LoadingManager();
-const gltfLoader = new GLTFLoader(loadingManager);
 
 // Models
 let playerModel: THREE.Object3D;
@@ -197,7 +195,7 @@ const obstacles: THREE.Object3D[] = [];
 const remoteObstacles: { [key: string]: THREE.Object3D } = {};
 
 // Loading manager event handlers
-loadingManager.onProgress = (url, loaded, total) => {
+loadingManager.onProgress = (_url, _loaded, _total) => {
   // We don't need to update a progress bar anymore
 };
 
@@ -206,8 +204,8 @@ loadingManager.onLoad = () => {
   startGame();
 };
 
-loadingManager.onError = (url) => {
-  console.error(`Error loading ${url}`);
+loadingManager.onError = (_url) => {
+  console.error(`Error loading asset`);
   // Force start the game after a short delay even if there are errors
   setTimeout(() => {
     loadingScreen.style.display = "none";
