@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: dino-runner
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    region: oregon
+    branch: main
+    numInstances: 1
+    port: 10000
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
