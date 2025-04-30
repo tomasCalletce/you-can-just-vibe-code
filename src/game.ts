@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 import { showGameOverUI, updateScoreDisplay } from './ui';
-import { obstacles, clearObstacles, spawnObstacle, obstacleSpawnInterval, setObstacleSpawnInterval } from './obstacles'; // Assuming obstacles.ts
+import { clearObstacles, spawnObstacle, obstacleSpawnInterval, setObstacleSpawnInterval } from './obstacles'; // Assuming obstacles.ts
 import { playerModel, resetPlayerState } from './player'; // Assuming player.ts
 import { socket, sendPlayerUpdate } from './network'; // Assuming network.ts
 import { clearCollectibles } from './collectibles'; // Import clearCollectibles
 import { clearSponsors } from './sponsors'; // Import clearSponsors
 import { clearDustEffect } from './effects'; // Import effect clear function
-import { GROUND_LEVEL, DIFFICULTY_LEVELS } from './config';
+import { DIFFICULTY_LEVELS } from './config';
 
 // Game state
 export let isGameRunning = false; // Start as false, set to true by startGame
@@ -111,14 +111,10 @@ export function updateDifficulty(elapsedSeconds: number) {
     }
 }
 
-// Update score based on time
+// Update score display only
 export function updateScore() {
     if (!isGameRunning) return;
-    // Calculate score based on time (10 points per second)
-    const currentTime = Date.now();
-    const timeScore = Math.floor((currentTime - startTime) / 100);
-    // We don't directly set score here anymore, just update display based on current score
-    updateScoreDisplay(score); // Display the current total score
+    updateScoreDisplay(score);
 }
 
 // Function to add points to the score (e.g., from collectibles)

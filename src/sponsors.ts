@@ -26,7 +26,6 @@ const textureLoader = new THREE.TextureLoader();
 const sponsorTextures: THREE.Texture[] = [];
 const sponsorBanners: THREE.Mesh[] = []; // Store active banners
 let nextSponsorSpawnZ = SPAWN_DISTANCE;
-let lastPlayerZ = 0; // To track distance for spawning
 
 export async function initSponsors() {
     console.log("Initializing sponsors...");

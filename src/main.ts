@@ -2,24 +2,21 @@ import "./style.css";
 import * as THREE from "three";
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"; // Now imported in scene.ts
 import { initUI, showLoadingScreen } from "./ui";
-import { isGameRunning, startGameFlow, stopGameFlow, updateScore, updateDifficulty, startTime as gameStartTime } from "./game";
+import { isGameRunning, startGameFlow, updateScore, updateDifficulty, startTime as gameStartTime } from "./game";
 import { initScene, camera, controls, renderScene } from "./scene";
 import { initPlayer, updatePlayerJump, updatePlayerBoundingBox, updatePlayerHorizontalMovement } from './player';
-import { initObstacles, updateObstacles, clearObstacles } from './obstacles';
-import { initCollectibles, updateCollectibles, clearCollectibles } from './collectibles';
-import { initSponsors, updateSponsors, clearSponsors } from './sponsors';
+import { initObstacles, updateObstacles } from './obstacles';
+import { initCollectibles, updateCollectibles } from './collectibles';
+import { initSponsors, updateSponsors } from './sponsors';
 import { initNetwork, sendPlayerUpdate } from './network';
 import { initControls } from './controls';
-import { initDustEffect, updateDustEffect, clearDustEffect } from './effects'; // Import effect functions
+import { initDustEffect, updateDustEffect } from './effects'; // Import effect functions
 
 // Initialize core modules
 initUI();
 initScene();
 initNetwork(); // Initialize network connection and listeners
 initControls(); // Initialize input listeners
-
-// Use loading manager for model initialization
-const loadingManager = new THREE.LoadingManager();
 
 // Clock for delta time
 const clock = new THREE.Clock();

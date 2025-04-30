@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import { scene } from './scene';
 import { createDataPointModel } from './models';
-import { LANE_WIDTH, SPAWN_DISTANCE, DESPAWN_DISTANCE, OBSTACLE_SPEED } from './config'; // Use similar config as obstacles for now
-import { isGameRunning, score, addScore } from './game'; // Need to add addScore to game.ts
+import { LANE_WIDTH, /* SPAWN_DISTANCE, */ DESPAWN_DISTANCE, OBSTACLE_SPEED } from './config'; // Use similar config as obstacles for now
+import { isGameRunning, /* score, */ addScore } from './game'; // Need to add addScore to game.ts
 import { getPlayerBoundingBox } from './player';
 import { socket } from './network'; // To broadcast collection
 

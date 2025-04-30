@@ -1,4 +1,4 @@
-import * as THREE from 'three'; // Import THREE
+// import * as THREE from 'three'; // Import THREE
 import { restartGame } from "./game"; // Assuming game.ts will export restartGame
 import { getCamera } from './scene'; // We'll get the camera from scene.ts later
 

@@ -105,9 +105,8 @@ export function updateObstacles() {
 }
 
 function checkCollision(playerBox: THREE.Box3, obstacle: THREE.Object3D): boolean {
-    // Create obstacle's bounding box on the fly or cache it if needed
     const obstacleBoundingBox = new THREE.Box3().setFromObject(obstacle);
-    obstacleBoundingBox.expandByScalar(-0.15); // Shrink obstacle box slightly (adjust value as needed)
+    obstacleBoundingBox.expandByScalar(-0.15); // Shrink obstacle box slightly
     return playerBox.intersectsBox(obstacleBoundingBox);
 }
 
@@ -127,42 +126,4 @@ export function clearObstacles() {
     }
     obstacles.length = 0;
     remoteObstacles = {}; // Clear remote tracking map
-}
-
-// Update Collectibles to use dynamic speed too (if they move)
-export function updateCollectibles() {
-    if (!isGameRunning) return;
-
-    const playerBox = getPlayerBoundingBox();
-    const currentSpeed = getCurrentObstacleSpeed(); // Get current speed
-
-    for (let i = collectibles.length - 1; i >= 0; i--) {
-        const collectible = collectibles[i];
-
-        // Optional: Add animation (e.g., rotation)
-        collectible.rotation.y += 0.02;
-        collectible.rotation.x += 0.01;
-
-        // Move towards player
-        collectible.position.z += currentSpeed; // Use current speed
-
-        // Check collision
-        if (checkCollisionCollectibles(playerBox, collectible)) { // Use separate check function name
-            collect(collectible, i);
-            continue;
-        }
-
-        // Despawn if missed
-        if (collectible.position.z > DESPAWN_DISTANCE) {
-            removeCollectible(collectible, i);
-        }
-    }
-}
-
-// Separate collision check for collectibles
-function checkCollisionCollectibles(playerBox: THREE.Box3, collectible: THREE.Object3D): boolean {
-    const collectibleBoundingBox = new THREE.Box3().setFromObject(collectible);
-    // Maybe use a slightly larger box for collectibles to make them easier to grab
-    // collectibleBoundingBox.expandByScalar(0.1);
-    return playerBox.intersectsBox(collectibleBoundingBox);
 } 
