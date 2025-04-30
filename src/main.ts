@@ -12,9 +12,12 @@ import { initNetwork, sendPlayerUpdate } from './network';
 import { initControls } from './controls';
 import { initDustEffect, updateDustEffect } from './effects'; // Import effect functions
 
+console.log("--- main.ts executing ---"); // Log 1: Script start
+
 // Initialize core modules
 initUI();
 initScene();
+console.log("--- Calling initNetwork() ---"); // Log 2: Before network init
 initNetwork(); // Initialize network connection and listeners
 initControls(); // Initialize input listeners
 

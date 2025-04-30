@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { showGameOverUI, updateScoreDisplay } from './ui';
 import { clearObstacles, spawnObstacle, obstacleSpawnInterval, setObstacleSpawnInterval } from './obstacles'; // Assuming obstacles.ts
-import { playerModel, resetPlayerState } from './player'; // Assuming player.ts
+import { playerModel, resetPlayerState, hidePlayer } from './player'; // Assuming player.ts
 import { socket, sendPlayerUpdate } from './network'; // Assuming network.ts
 import { clearCollectibles } from './collectibles'; // Import clearCollectibles
 import { clearSponsors } from './sponsors'; // Import clearSponsors
@@ -54,6 +54,9 @@ export function stopGameFlow() {
     if (!isGameRunning) return; // Prevent multiple calls
     console.log("Stopping game flow...");
     isGameRunning = false;
+
+    hidePlayer(); // Hide the local player model
+
     showGameOverUI(true);
 
     // Stop spawning obstacles
