@@ -1,15 +1,13 @@
 import * as THREE from 'three';
 import { scene } from './scene';
 import { createDataPointModel } from './models';
-import { LANE_WIDTH, /* SPAWN_DISTANCE, */ DESPAWN_DISTANCE, OBSTACLE_SPEED } from './config'; // Use similar config as obstacles for now
-import { isGameRunning, /* score, */ addScore } from './game'; // Need to add addScore to game.ts
+import { LANE_WIDTH, DESPAWN_DISTANCE, OBSTACLE_SPEED, DATA_POINT_SPAWN_CHANCE, POINTS_PER_DATA_POINT } from './config';
+import { isGameRunning, addScore } from './game';
 import { getPlayerBoundingBox } from './player';
 import { socket } from './network'; // To broadcast collection
 
 let dataPointModelTemplate: THREE.Object3D | null = null;
 const collectibles: THREE.Object3D[] = [];
-const COLLECTIBLE_SPAWN_CHANCE = 0.2; // Chance to spawn a collectible alongside an obstacle group
-const POINTS_PER_COLLECTIBLE = 50; // Score points for collecting
 
 export async function initCollectibles() {
     dataPointModelTemplate = await createDataPointModel();
@@ -18,7 +16,7 @@ export async function initCollectibles() {
 
 // Function to attempt spawning collectibles (call this alongside obstacle spawning)
 export function trySpawnCollectible(baseZ: number) {
-    if (!isGameRunning || !dataPointModelTemplate || Math.random() > COLLECTIBLE_SPAWN_CHANCE) {
+    if (!isGameRunning || !dataPointModelTemplate || Math.random() > DATA_POINT_SPAWN_CHANCE) {
         return;
     }
 
@@ -72,7 +70,7 @@ function checkCollision(playerBox: THREE.Box3, collectible: THREE.Object3D): boo
 
 function collect(collectible: THREE.Object3D, index: number) {
     console.log("Collected data point!");
-    addScore(POINTS_PER_COLLECTIBLE); // Add score
+    addScore(POINTS_PER_DATA_POINT);
 
     // Broadcast collection to server/other players
     if (socket && socket.connected && collectible.userData.id) {

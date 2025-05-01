@@ -5,6 +5,7 @@ import { updatePlayerCountDisplay } from './ui';
 import { getPlayerModel, getIsJumping } from './player'; // Get local player info
 import { spawnRemoteObstacle } from './obstacles'; // To spawn obstacles received from server
 import { removeCollectedCollectible } from './collectibles'; // Import function to remove collected items
+import { removeCollectedSponsorCollectible } from './sponsor_collectibles'; // Import remove function for sponsor items
 
 export let socket: Socket;
 let playerId: string = "";
@@ -87,10 +88,16 @@ export function initNetwork() {
         spawnRemoteObstacle(data.id, data.position);
     });
 
-    // Listener for when another player collects an item
+    // Listener for when another player collects a standard data point
     socket.on("collectibleWasCollected", (collectibleId: string) => {
         console.log(`Collectible ${collectibleId} was collected by another player`);
         removeCollectedCollectible(collectibleId); // Remove it visually for this client
+    });
+
+    // Listener for when another player collects a SPONSOR data point
+    socket.on("sponsorCollectibleWasCollected", (collectibleId: string) => {
+        console.log(`Sponsor collectible ${collectibleId} was collected by another player`);
+        removeCollectedSponsorCollectible(collectibleId);
     });
 
     socket.on("playerGameOver", (id: string) => {

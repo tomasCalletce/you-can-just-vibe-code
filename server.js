@@ -87,11 +87,18 @@ io.on("connection", (socket) => {
      socket.broadcast.emit("newObstacle", data);
   });
 
-  // Handle collectible collection
+  // Handle standard collectible collection
   socket.on("collectibleCollected", (collectibleId) => {
       // Notify other players that this item was collected
       // console.log(`Broadcasting collection of ${collectibleId}`);
       socket.broadcast.emit("collectibleWasCollected", collectibleId);
+  });
+
+  // Handle SPONSOR collectible collection
+  socket.on("sponsorCollectibleCollected", (collectibleId) => {
+      // Notify other players that this item was collected
+      console.log(`[Server] Broadcasting collection of SPONSOR collectible ${collectibleId}`);
+      socket.broadcast.emit("sponsorCollectibleWasCollected", collectibleId);
   });
 
   // Handle game over notification

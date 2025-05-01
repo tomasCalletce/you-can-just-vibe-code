@@ -19,7 +19,8 @@ const sponsorImagePaths = [
     '/sponsors/pelnti.jpg',
     '/sponsors/truora1.png',
     '/sponsors/wiwi.png',
-    '/sponsors/yavendio-logo.png'
+    '/sponsors/yavendio-logo.png',
+    '/sponsors/cronograma-banner.png'
 ];
 
 const textureLoader = new THREE.TextureLoader();

@@ -6,6 +6,7 @@ import { socket, sendPlayerUpdate } from './network'; // Assuming network.ts
 import { clearCollectibles } from './collectibles'; // Import clearCollectibles
 import { clearSponsors } from './sponsors'; // Import clearSponsors
 import { clearDustEffect } from './effects'; // Import effect clear function
+import { clearSponsorCollectibles } from './sponsor_collectibles'; // Import new clear function
 import { DIFFICULTY_LEVELS } from './config';
 
 // Game state
@@ -33,6 +34,7 @@ export function startGameFlow(camera: THREE.PerspectiveCamera) {
     clearCollectibles(); // Clear collectibles on start
     clearSponsors(); // Clear sponsors on start
     clearDustEffect(); // Clear dust particles on start
+    clearSponsorCollectibles(); // Clear sponsor collectibles
 
     // Look at player
     if (playerModel) {

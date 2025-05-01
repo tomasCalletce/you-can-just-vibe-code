@@ -8,6 +8,7 @@ import { initPlayer, updatePlayerJump, updatePlayerBoundingBox, updatePlayerHori
 import { initObstacles, updateObstacles } from './obstacles';
 import { initCollectibles, updateCollectibles } from './collectibles';
 import { initSponsors, updateSponsors } from './sponsors';
+import { initSponsorCollectibles, updateSponsorCollectibles } from './sponsor_collectibles';
 import { initNetwork, sendPlayerUpdate } from './network';
 import { initControls } from './controls';
 import { initDustEffect, updateDustEffect } from './effects'; // Import effect functions
@@ -35,7 +36,8 @@ async function initializeGameAssets() {
             initObstacles(),
             initCollectibles(),
             initSponsors(),
-            initDustEffect() // Initialize dust effect
+            initDustEffect(),
+            initSponsorCollectibles() // Initialize new collectibles
         ]);
         console.log("Assets initialized successfully.");
         showLoadingScreen(false);
@@ -85,7 +87,7 @@ function animate() {
         const elapsedSeconds = (Date.now() - gameStartTime) / 1000;
         updateDifficulty(elapsedSeconds); // Update difficulty based on time
 
-        updateScore();
+    updateScore();
         updatePlayerJump();
         updatePlayerHorizontalMovement(); // Add call to update horizontal movement
         updatePlayerBoundingBox(); // Update player bounding box for collisions
@@ -93,6 +95,7 @@ function animate() {
         updateCollectibles(); // Add update for collectibles
         updateSponsors(); // Add update for sponsors
         updateDustEffect(deltaTime); // Update dust effect, pass delta time
+        updateSponsorCollectibles(deltaTime); // Update new collectibles
         controls.update(); // Update OrbitControls if enabled/used
 
         // Periodic player update to network

@@ -7,6 +7,7 @@ import { getPlayerBoundingBox } from './player';
 import { socket } from './network'; // For broadcasting spawns and receiving remote spawns
 import { trySpawnCollectible } from './collectibles'; // Import the collectible spawn function
 import { triggerSponsorSpawn } from './sponsors'; // Import the sponsor spawn trigger
+import { trySpawnSponsorCollectible } from './sponsor_collectibles'; // Import new spawn function
 
 export let obstacles: THREE.Object3D[] = [];
 export let remoteObstacles: { [key: string]: THREE.Object3D } = {}; // Track obstacles spawned by others
@@ -61,9 +62,10 @@ export function spawnObstacle() {
         }
     }
 
-    // After spawning obstacles, try spawning collectible and sponsor
+    // After spawning obstacles, try spawning items
     trySpawnCollectible(baseZ);
-    triggerSponsorSpawn(baseZ); // Call the trigger
+    triggerSponsorSpawn(baseZ); // This is for the large visual banners
+    trySpawnSponsorCollectible(baseZ); // Try to spawn the small sponsor collectible
 }
 
 // Called by network.ts when receiving a remote obstacle spawn event
