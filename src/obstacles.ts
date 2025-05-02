@@ -7,6 +7,7 @@ import { getPlayerBoundingBox } from './player';
 import { socket } from './network'; // For broadcasting spawns and receiving remote spawns
 import { trySpawnCollectible } from './collectibles'; // Import the collectible spawn function
 import { triggerSponsorSpawn } from './sponsors'; // Import the sponsor spawn trigger
+import { trySpawnSponsorCollectible } from './sponsor_collectibles'; // Import new spawn function
 
 export let obstacles: THREE.Object3D[] = [];
 export let remoteObstacles: { [key: string]: THREE.Object3D } = {}; // Track obstacles spawned by others
@@ -61,9 +62,10 @@ export function spawnObstacle() {
         }
     }
 
-    // After spawning obstacles, try spawning collectible and sponsor
+    // After spawning obstacles, try spawning items
     trySpawnCollectible(baseZ);
-    triggerSponsorSpawn(baseZ); // Call the trigger
+    triggerSponsorSpawn(baseZ); // This is for the large visual banners
+    trySpawnSponsorCollectible(baseZ); // Try to spawn the small sponsor collectible
 }
 
 // Called by network.ts when receiving a remote obstacle spawn event
@@ -105,9 +107,8 @@ export function updateObstacles() {
 }
 
 function checkCollision(playerBox: THREE.Box3, obstacle: THREE.Object3D): boolean {
-    // Create obstacle's bounding box on the fly or cache it if needed
     const obstacleBoundingBox = new THREE.Box3().setFromObject(obstacle);
-    obstacleBoundingBox.expandByScalar(-0.15); // Shrink obstacle box slightly (adjust value as needed)
+    obstacleBoundingBox.expandByScalar(-0.15); // Shrink obstacle box slightly
     return playerBox.intersectsBox(obstacleBoundingBox);
 }
 
@@ -127,42 +128,4 @@ export function clearObstacles() {
     }
     obstacles.length = 0;
     remoteObstacles = {}; // Clear remote tracking map
-}
-
-// Update Collectibles to use dynamic speed too (if they move)
-export function updateCollectibles() {
-    if (!isGameRunning) return;
-
-    const playerBox = getPlayerBoundingBox();
-    const currentSpeed = getCurrentObstacleSpeed(); // Get current speed
-
-    for (let i = collectibles.length - 1; i >= 0; i--) {
-        const collectible = collectibles[i];
-
-        // Optional: Add animation (e.g., rotation)
-        collectible.rotation.y += 0.02;
-        collectible.rotation.x += 0.01;
-
-        // Move towards player
-        collectible.position.z += currentSpeed; // Use current speed
-
-        // Check collision
-        if (checkCollisionCollectibles(playerBox, collectible)) { // Use separate check function name
-            collect(collectible, i);
-            continue;
-        }
-
-        // Despawn if missed
-        if (collectible.position.z > DESPAWN_DISTANCE) {
-            removeCollectible(collectible, i);
-        }
-    }
-}
-
-// Separate collision check for collectibles
-function checkCollisionCollectibles(playerBox: THREE.Box3, collectible: THREE.Object3D): boolean {
-    const collectibleBoundingBox = new THREE.Box3().setFromObject(collectible);
-    // Maybe use a slightly larger box for collectibles to make them easier to grab
-    // collectibleBoundingBox.expandByScalar(0.1);
-    return playerBox.intersectsBox(collectibleBoundingBox);
 } 

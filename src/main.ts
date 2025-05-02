@@ -2,24 +2,25 @@ import "./style.css";
 import * as THREE from "three";
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"; // Now imported in scene.ts
 import { initUI, showLoadingScreen } from "./ui";
-import { isGameRunning, startGameFlow, stopGameFlow, updateScore, updateDifficulty, startTime as gameStartTime } from "./game";
+import { isGameRunning, startGameFlow, updateScore, updateDifficulty, startTime as gameStartTime } from "./game";
 import { initScene, camera, controls, renderScene } from "./scene";
 import { initPlayer, updatePlayerJump, updatePlayerBoundingBox, updatePlayerHorizontalMovement } from './player';
-import { initObstacles, updateObstacles, clearObstacles } from './obstacles';
-import { initCollectibles, updateCollectibles, clearCollectibles } from './collectibles';
-import { initSponsors, updateSponsors, clearSponsors } from './sponsors';
+import { initObstacles, updateObstacles } from './obstacles';
+import { initCollectibles, updateCollectibles } from './collectibles';
+import { initSponsors, updateSponsors } from './sponsors';
+import { initSponsorCollectibles, updateSponsorCollectibles } from './sponsor_collectibles';
 import { initNetwork, sendPlayerUpdate } from './network';
 import { initControls } from './controls';
-import { initDustEffect, updateDustEffect, clearDustEffect } from './effects'; // Import effect functions
+import { initDustEffect, updateDustEffect } from './effects'; // Import effect functions
+
+console.log("--- main.ts executing ---"); // Log 1: Script start
 
 // Initialize core modules
 initUI();
 initScene();
+console.log("--- Calling initNetwork() ---"); // Log 2: Before network init
 initNetwork(); // Initialize network connection and listeners
 initControls(); // Initialize input listeners
-
-// Use loading manager for model initialization
-const loadingManager = new THREE.LoadingManager();
 
 // Clock for delta time
 const clock = new THREE.Clock();
@@ -35,7 +36,8 @@ async function initializeGameAssets() {
             initObstacles(),
             initCollectibles(),
             initSponsors(),
-            initDustEffect() // Initialize dust effect
+            initDustEffect(),
+            initSponsorCollectibles() // Initialize new collectibles
         ]);
         console.log("Assets initialized successfully.");
         showLoadingScreen(false);
@@ -85,7 +87,7 @@ function animate() {
         const elapsedSeconds = (Date.now() - gameStartTime) / 1000;
         updateDifficulty(elapsedSeconds); // Update difficulty based on time
 
-        updateScore();
+    updateScore();
         updatePlayerJump();
         updatePlayerHorizontalMovement(); // Add call to update horizontal movement
         updatePlayerBoundingBox(); // Update player bounding box for collisions
@@ -93,6 +95,7 @@ function animate() {
         updateCollectibles(); // Add update for collectibles
         updateSponsors(); // Add update for sponsors
         updateDustEffect(deltaTime); // Update dust effect, pass delta time
+        updateSponsorCollectibles(deltaTime); // Update new collectibles
         controls.update(); // Update OrbitControls if enabled/used
 
         // Periodic player update to network

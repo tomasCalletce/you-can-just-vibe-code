@@ -18,6 +18,12 @@ export const SPONSOR_BANNER_Y_POS = 2.5; // Height off the ground
 export const SPONSOR_BANNER_SIDE_OFFSET = 8; // Distance from center line
 export const SPONSOR_SPAWN_INTERVAL_Z = 25; // Spawn a banner every X units of Z distance 
 
+// Collectibles
+export const POINTS_PER_DATA_POINT = 50; // Renamed for clarity
+export const POINTS_PER_SPONSOR_COLLECTIBLE = 250; // Higher points for sponsor items
+export const DATA_POINT_SPAWN_CHANCE = 0.2;
+export const SPONSOR_COLLECTIBLE_SPAWN_CHANCE = 0.1; // Lower chance than data points
+
 // Difficulty Levels (time in seconds)
 export const DIFFICULTY_LEVELS = [
     { timeThreshold: 0, speed: 0.25, spawnInterval: 500 },   // Nivel 0 (Inicial)

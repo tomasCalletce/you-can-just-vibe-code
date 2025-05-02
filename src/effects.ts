@@ -17,8 +17,6 @@ const particleVelocities = new Array(MAX_PARTICLES).fill(null).map(() => new THR
 const particleLifetimes = new Float32Array(MAX_PARTICLES);
 const particleIsActive = new Array(MAX_PARTICLES).fill(false);
 
-let lastSpawnTime = 0;
-
 export function initDustEffect() {
     particleGeometry = new THREE.BufferGeometry();
 

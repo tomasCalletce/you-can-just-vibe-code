@@ -1,4 +1,4 @@
-import * as THREE from 'three'; // Import THREE
+// import * as THREE from 'three'; // Import THREE
 import { restartGame } from "./game"; // Assuming game.ts will export restartGame
 import { getCamera } from './scene'; // We'll get the camera from scene.ts later
 
@@ -115,6 +115,37 @@ export function initUI() {
         console.error("Camera not available for restart");
     }
   });
+
+  // Add styles for the collected sponsor display
+  const styleSheet = document.createElement("style");
+  styleSheet.type = "text/css";
+  styleSheet.innerText = `
+    .collected-sponsor-display {
+      position: fixed;
+      left: 50%;
+      top: 15%;
+      transform: translate(-50%, -50%);
+      max-width: 180px;
+      max-height: 120px;
+      padding: 8px;
+      background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent white background */
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      z-index: 1500; /* Above game, potentially below fixed banner? */
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      pointer-events: none; /* Prevent interaction */
+    }
+    .collected-sponsor-display.visible {
+      opacity: 1;
+    }
+    .collected-sponsor-display img {
+       display: block;
+       width: 100%;
+       height: auto;
+    }
+  `;
+  document.head.appendChild(styleSheet);
 }
 
 export function updateScoreDisplay(score: number) {
@@ -142,4 +173,37 @@ export function showGameOverUI(show: boolean) {
   if (playAgainButton) {
     playAgainButton.style.display = show ? "block" : "none";
   }
+}
+
+// Function to display the collected sponsor image briefly
+export function displayCollectedSponsor(imagePath: string) {
+    console.log(`Displaying collected sponsor: ${imagePath}`);
+    const imgContainer = document.createElement('div');
+    imgContainer.className = 'collected-sponsor-display'; // Apply base style
+
+    const imgElement = document.createElement('img');
+    imgElement.src = imagePath;
+    imgElement.alt = "Sponsor Logo";
+
+    imgContainer.appendChild(imgElement);
+    document.body.appendChild(imgContainer);
+
+    // Trigger fade-in after a slight delay to allow CSS transition
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => { // Double request for robustness
+             imgContainer.classList.add('visible');
+        });
+    });
+
+
+    // Set timeout to fade out and remove
+    setTimeout(() => {
+        imgContainer.classList.remove('visible');
+        // Remove the element after the fade-out transition completes
+        setTimeout(() => {
+             if (imgContainer.parentNode) {
+                imgContainer.parentNode.removeChild(imgContainer);
+            }
+        }, 500); // Matches CSS transition duration
+    }, 2000); // Display for 2 seconds before starting fade-out
 } 

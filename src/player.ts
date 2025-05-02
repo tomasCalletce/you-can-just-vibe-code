@@ -35,9 +35,26 @@ export async function initPlayer() {
 export function resetPlayerState() {
     if (playerModel) {
         playerModel.position.set(0, GROUND_LEVEL, 0);
-        targetHorizontalPosition = 0; // Reset target X position
+        targetHorizontalPosition = 0;
+        showPlayer(); // Make sure player is visible on reset
     }
     isJumping = false;
+}
+
+// Hide the player model
+export function hidePlayer() {
+    if (playerModel) {
+        playerModel.visible = false;
+        console.log("[Player] Model hidden.");
+    }
+}
+
+// Show the player model
+export function showPlayer() {
+    if (playerModel) {
+        playerModel.visible = true;
+        console.log("[Player] Model shown.");
+    }
 }
 
 // Called by controls.ts
